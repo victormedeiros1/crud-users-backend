@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: mysql:8.0
+    container_name: crud-users
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "secret"
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+volumes:
+  db:
+    driver: local

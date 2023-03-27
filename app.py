@@ -50,6 +50,13 @@ def getUser(id):
     else:
         return {'status': 404}
 
+@app.route('/user/delete/<int:id>', methods=['DELETE'])
+def deleteUser(id):
+    cursor.execute(f"DELETE FROM TB_USERS WHERE USE_ID = '{id}'")
+    connection.commit()
+    
+    return { 'status': 200 }
+
 @app.route('/auth', methods=['POST'])
 def auth():
     # Pegando os dados do usuário

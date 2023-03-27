@@ -15,6 +15,41 @@ CORS(app)
 def index():
     return users
 
+@app.route('/user/<int:id>', methods=['GET'])
+def getUser(id):
+    cursor.execute(f"SELECT * FROM TB_USERS WHERE '{id}' = USE_ID;")
+    userData = cursor.fetchall()
+
+    # Verificando se algum usuário foi encontrado, se sim, retorna o ID
+    if(len(userData) > 0):
+
+        # Transformando em algo mais manuseável para o front [{}]
+        keys = ('id', 'name', 'email', 'cpf', 'pis', 'password')
+
+        result = []
+        for data in userData:
+            # Criando um novo dicionário para incluir os dados de endereço
+            address = {}
+            address['country'] = data[3]
+            address['state'] = data[4]
+            address['city'] = data[5]
+            address['cep'] = data[6]
+            address['street'] = data[7]
+            address['number'] = data[8]
+            address['complement'] = data[9]
+
+            # Criando o dicionário principal do usuário sem os dados de endereço
+            user = dict(zip(keys, [data[0], data[1], data[2], data[10], data[11], data[12]]))
+            user['address'] = address
+
+            result.append(user)
+
+        objectWithData = json.dumps(result)
+
+        return objectWithData
+    else:
+        return {'status': 404}
+
 @app.route('/auth', methods=['POST'])
 def auth():
     # Pegando os dados do usuário
@@ -23,22 +58,22 @@ def auth():
     password = formData['password']
     
     # Fazendo a busca no banco
-    cursor.execute(f"SELECT * FROM TB_USERS WHERE (USE_EMAIL = '{login}' OR USE_CPF = '{login}' OR USE_PIS = '{login}') AND USE_PASSWORD = '{password}';")
+    cursor.execute(f"SELECT USE_ID, USE_NAME FROM TB_USERS WHERE (USE_EMAIL = '{login}' OR USE_CPF = '{login}' OR USE_PIS = '{login}') AND USE_PASSWORD = '{password}';")
     userData = cursor.fetchall()
 
-    # Verificando algum usuário foi encontrado
+    # Verificando algum usuário foi encontrado, sesim retorna o ID
     if(len(userData) > 0):
 
         # Transformando em algo mais manuseável para o front [{}]
-        keys = ('id', 'name', 'country', 'state', 'city', 'cep', 'street', 'number', 'complement', 'cpf', 'pis', 'password')
+        keys = ('id', 'name' )
 
         result = []
         for data in userData:
             result.append(dict(zip(keys, data)))
 
-        artificialJson = json.dumps(result)
+        objectWithData = json.dumps(result)
 
-        return artificialJson
+        return objectWithData
     else:
         return {'status': 404}
 

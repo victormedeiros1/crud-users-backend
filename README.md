@@ -1,6 +1,6 @@
 # crud-users-backend
 
-## Esse é o backend da aplicação, ele inclui a API feita em Python com Flask e a criação do container usando Docker e MySQL.
+Esse é o backend da aplicação, ele inclui a API feita em Python com Flask e a criação do container usando Docker e MySQL.
 
 Algumas dependências devem ser instaladas, são elas:
 

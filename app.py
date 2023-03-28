@@ -1,6 +1,7 @@
 import mysql.connector
 import json
-from flask import Flask, request, jsonify
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, JWTManager
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 
 # Conectando ao banco
@@ -9,13 +10,17 @@ cursor = connection.cursor()
 
 # Instancionado o Flask e utilizando CORS
 app = Flask('crud-users-backend') 
+app.config['JWT_SECRET_KEY'] = 'my_ultra_secret_key'
+
 CORS(app)
+jwt = JWTManager(app) 
 
 @app.route('/')
 def index():
     return users
 
 @app.route('/user/<int:id>', methods=['GET'])
+@jwt_required()
 def getUser(id):
     cursor.execute(f"SELECT * FROM TB_USERS WHERE '{id}' = USE_ID;")
     userData = cursor.fetchall()
@@ -27,6 +32,7 @@ def getUser(id):
         keys = ('id', 'name', 'email', 'cpf', 'pis', 'password')
 
         result = []
+        
         for data in userData:
             # Criando um novo dicionário para incluir os dados de endereço
             address = {}
@@ -44,7 +50,7 @@ def getUser(id):
 
             result.append(user)
 
-        objectWithData = json.dumps(result)
+            objectWithData = json.dumps(result)
 
         return objectWithData
     else:
@@ -70,17 +76,15 @@ def auth():
 
     # Verificando algum usuário foi encontrado, sesim retorna o ID
     if(len(userData) > 0):
+        
+        access_token = create_access_token(identity=login)
 
-        # Transformando em algo mais manuseável para o front [{}]
-        keys = ('id', 'name' )
+        for row in userData:
+            id = row[0]
+            name = row[1]
+            token = access_token
 
-        result = []
-        for data in userData:
-            result.append(dict(zip(keys, data)))
-
-        objectWithData = json.dumps(result)
-
-        return objectWithData
+        return {'id': id, 'name': name, 'token': token}
     else:
         return {'status': 404}
 

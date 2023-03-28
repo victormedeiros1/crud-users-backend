@@ -32,7 +32,7 @@ def getUser(id):
         keys = ('id', 'name', 'email', 'cpf', 'pis', 'password')
 
         result = []
-        
+
         for data in userData:
             # Criando um novo dicionário para incluir os dados de endereço
             address = {}
@@ -57,6 +57,7 @@ def getUser(id):
         return {'status': 404}
 
 @app.route('/user/delete/<int:id>', methods=['DELETE'])
+@jwt_required()
 def deleteUser(id):
     cursor.execute(f"DELETE FROM TB_USERS WHERE USE_ID = '{id}'")
     connection.commit()
@@ -108,5 +109,6 @@ def createUser():
         f"INSERT INTO TB_USERS(USE_NAME, USE_EMAIL, USE_COUNTRY, USE_STATE, USE_CITY, USE_CEP, USE_STREET, USE_NUMBER, USE_COMPLEMENT, USE_CPF, USE_PIS, USE_PASSWORD) VALUES('{name}', '{email}', '{country}', '{state}', '{city}', '{cep}', '{street}', '{number}', '{complement}', '{pis}', '{cpf}', '{password}')")
     connection.commit()
     
-    return 'REQUISIÇÃO BEM SUCEDIDA'
+    return { 'status': 200 }
+    
 app.run(port = 5000, host='localhost', debug=True)

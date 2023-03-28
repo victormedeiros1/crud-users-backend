@@ -1,5 +1,6 @@
 import mysql.connector
 import json
+from datetime import timedelta
 from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, JWTManager
 from flask import Flask, request, jsonify, g
 from flask_cors import CORS
@@ -11,13 +12,14 @@ cursor = connection.cursor()
 # Instancionado o Flask e utilizando CORS
 app = Flask('crud-users-backend') 
 app.config['JWT_SECRET_KEY'] = 'my_ultra_secret_key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=60)
 
 CORS(app)
 jwt = JWTManager(app) 
 
 @app.route('/')
 def index():
-    return users
+    return { 'message': 'API FUNCIONANDO!'}
 
 @app.route('/user/<int:id>', methods=['GET'])
 @jwt_required()

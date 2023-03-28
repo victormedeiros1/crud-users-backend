@@ -1,3 +1,5 @@
+![thumbnail](https://user-images.githubusercontent.com/66215200/228317746-b574f656-aa0a-4430-9138-fe64555de2cb.jpg)
+
 # crud-users-backend
 
 Esse é o backend da aplicação, ele inclui a API feita em Python com Flask e a criação do container usando Docker e MySQL.

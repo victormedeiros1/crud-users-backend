@@ -8,6 +8,7 @@ Algumas dependências devem ser instaladas, são elas:
 - flask_jwt_extended
 - flask_cors
 - mysql-connector-python
+- 
 Ex: `pip install flask`
 
 ### Passo a passo de como rodar o backend. Vamos lá, na pasta do projeto:

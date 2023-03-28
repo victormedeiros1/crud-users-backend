@@ -2,6 +2,8 @@
 
 Esse é o backend da aplicação, ele inclui a API feita em Python com Flask e a criação do container usando Docker e MySQL.
 
+Montei um pequeno guia para a criação dessa aplicação com metas, conceitos e tecnologias para estudar, para acessá-lo clique [aqui](https://www.notion.so/Desafio-PontoTel-Guia-autoral-cc84efa4f297441d9ab4c6745ecef69f?pvs=4).
+
 Algumas dependências devem ser instaladas, são elas:
 
 - flask

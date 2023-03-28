@@ -19,7 +19,7 @@ Ex: `pip install flask`
 
 1º Criação do container Docker que comporta o banco dados.
 
-```docker-compose -up -d```
+```docker-compose up -d```
 
 Ao executar esse comando, um container Docker com a imagem do MySQL será criado e um arquivo `init.sql` contendo a única tabela necessária para a aplicação será construída.
 
